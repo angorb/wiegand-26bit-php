@@ -28,12 +28,14 @@ class Calculator
             \substr($binary, 9, self::MAX_CARD_BITS)
         );
 
-        $this->hex = base_convert($binary, 2, 16);
+        $this->hex = \base_convert($binary, 2, 16);
+
+        $proxHex = \base_convert("1" . $binary, 2, 16);
 
         $this->proxmark = sprintf(
             "%x%08s",
             self::PROXMARK_FRONT_BITS,
-            $this->hex
+            $proxHex
         );
     }
 
@@ -44,16 +46,26 @@ class Calculator
      * @param int $facility
      * @param int $card
      * @return Calculator
-     * @throws Exception
+     * @throws OutOfBoundsException
      */
     public static function fromFacilityCard(int $facility, int $card): self
     {
         if ($facility < 0 || $facility > 255) {
-            throw new \OutOfRangeException("Invalid Facility Code [0-255]");
+            throw new \OutOfBoundsException(
+                \sprintf(
+                    "Invalid Facility Code '%s' [Range: 0-255]",
+                    $facility
+                )
+            );
         }
 
         if ($card < 0 || $card > 65535) {
-            throw new \OutOfRangeException("Invalid User ID [0-65535]");
+            throw new \OutOfBoundsException(
+                \sprintf(
+                    "Invalid Card Number '%s' [Range: 0-65535]",
+                    $card
+                )
+            );
         }
 
         $facilityBin = \str_pad(
