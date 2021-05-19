@@ -5,6 +5,9 @@
 
 While doing some research for a RFID project, I started playing around with Wiegand calculators online. I couldn't find any examples in PHP but I found [this one](https://github.com/jonathansm/wiegand-26bit-calculator) in C and decided to reimplement it in a friendlier way for my own web projects.
 
+## See Also
+- HID Global - [Understanding Card Data Formats](https://www.hidglobal.com/sites/default/files/hid-understanding_card_data_formats-wp-en.pdf)
+
 ## Usage
 ```php
 <?php
