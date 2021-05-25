@@ -1,0 +1,14 @@
+{
+    "main": "bin/wiegand-26bit.php",
+    "directories": [
+        "vendor",
+        "src"
+    ],
+    "blacklist": [
+        "bin/wiegand-26bit.phar",
+        "bin/wiegand-26bit-php"
+    ],
+    "exclude-dev-files": false,
+    "compression": "GZ",
+    "output": "bin/wiegand-26bit-php"
+}

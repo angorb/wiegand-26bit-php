@@ -8,9 +8,6 @@
             "email": "nick@wemakepretty.com"
         }
     ],
-    "bin": [
-        "bin/wiegand-26bit-php"
-    ],
     "autoload": {
         "psr-4": {
             "Angorb\\Wiegand26Bit\\": "src/"

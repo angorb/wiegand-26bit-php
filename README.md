@@ -28,5 +28,48 @@ echo $wiegand->getFacilityCode();   // prints 99
 echo $wiegand->getCardNumber();     // prints 999
 
 ```
+## Command Line Utility
 
+### Requirements
+- PHP >7.3
+- ext-mbstring or symfony/polyfill-mbstring
+- ext-zlib (or disable compression in box.json before building)
+
+
+### Building
+Install box-project/box (not included in composer.json, [install your preferred way](https://github.com/box-project/box/blob/master/doc/installation.md))
+```
+❯ composer install
+❯ box compile
+```
+**Note:** Building and executing the resulting PHAR should work fine on *nix, MacOS and Windows, but the setup process for running PHARs without specifying the path to the PHP executable on Windows is super annoying.
+### Usage
+```shell
+❯ bin/wiegand-26bit-php
+*********** Wiegand 26Bit Calculator ***********
+Usage: bin/wiegand-26bit-php [-b binary] [-f facility_code] [-h, --help] [-p proxmark_id] [-u card_number] [-x hex]
+
+Optional Arguments:
+        -p proxmark_id
+                Proxmark-generated ID string
+        -f facility_code
+                Facility or site code [0-255] Must be used with -u
+        -u card_number
+                Unique or card code [0-65535] Must be used with -f
+        -x hex
+                Hex value of the 26bit RFID tag
+        -b binary
+                Binary value of the 26bit RFID tag
+        -h, --help
+                Prints usage information
+
+
+❯ bin/wiegand-26bit-php -f 255 -u 999
+*********** Wiegand 26Bit Calculator ***********
+Facility Code....... 255
+Card Number......... 999
+Binary.............. 01111111100000011111001111
+Hex................. 1fe07cf
+Proxmark............ 2005fe07cf
+```
 :robot: :heart: :robot:
