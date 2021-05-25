@@ -1,0 +1,26 @@
+{
+    "name": "angorb/wiegand26bit",
+    "description": "A Wiegand 26 Bit calculator for encoding/decoding 26-bit binary card data commonly used in RFID access control systems.",
+    "type": "library",
+    "authors": [
+        {
+            "name": "nick brogna",
+            "email": "nick@wemakepretty.com"
+        }
+    ],
+    "bin": [
+        "bin/wiegand-26bit-php"
+    ],
+    "autoload": {
+        "psr-4": {
+            "Angorb\\Wiegand26Bit\\": "src/"
+        }
+    },
+    "require": {
+        "ext-mbstring": "*",
+        "symfony/polyfill-mbstring": "^1.0"
+    },
+    "require-dev": {
+        "league/climate": "^3.7"
+    }
+}
