@@ -32,7 +32,7 @@ class Calculator
 
         $proxHex = \base_convert("1" . $binary, 2, 16);
 
-        $this->proxmark = sprintf(
+        $this->proxmark = \sprintf(
             "%x%08s",
             self::PROXMARK_FRONT_BITS,
             $proxHex
@@ -46,12 +46,12 @@ class Calculator
      * @param int $facility
      * @param int $card
      * @return Calculator
-     * @throws OutOfBoundsException
+     * @throws InvalidArgumentException
      */
     public static function fromFacilityCard(int $facility, int $card): self
     {
         if ($facility < 0 || $facility > 255) {
-            throw new \OutOfBoundsException(
+            throw new \InvalidArgumentException(
                 \sprintf(
                     "Invalid Facility Code '%s' [Range: 0-255]",
                     $facility
@@ -60,7 +60,7 @@ class Calculator
         }
 
         if ($card < 0 || $card > 65535) {
-            throw new \OutOfBoundsException(
+            throw new \InvalidArgumentException(
                 \sprintf(
                     "Invalid Card Number '%s' [Range: 0-65535]",
                     $card
@@ -91,12 +91,16 @@ class Calculator
     }
 
     /**
-     * @param string $proxmarkId
+     * @param string $proxmark
      * @return Calculator
      */
-    public static function fromProxmark(string $proxmarkId): self
+    public static function fromProxmark(string $proxmark): self
     {
-        $proxmarkDec = \hexdec($proxmarkId);
+        if (!\ctype_xdigit($proxmark) || \strlen($proxmark) !== 10) {
+            throw new \InvalidArgumentException("{$proxmark} is not a valid proxmark string");
+        }
+
+        $proxmarkDec = \hexdec($proxmark);
 
         $binary = \substr(
             \decbin($proxmarkDec),
@@ -112,6 +116,9 @@ class Calculator
      */
     public static function fromHex(string $hex): self
     {
+        if (!\ctype_xdigit($hex) || \strlen($hex) !== 7) {
+            throw new \InvalidArgumentException("{$hex} is not a valid hexadecimal input");
+        }
         $binary = \base_convert($hex, 16, 2);
         return new self($binary);
     }
@@ -122,6 +129,19 @@ class Calculator
      */
     public static function fromBinary(string $binary): self
     {
+        if (
+            !\filter_var(
+                $binary,
+                \FILTER_VALIDATE_REGEXP,
+                [
+                    'options' => [
+                        'regexp' => "/^[01]{26}$/"
+                    ]
+                ]
+            )
+        ) {
+            throw new \InvalidArgumentException("Binary input must be a 26-character string of 0 and 1 only");
+        }
         return new self($binary);
     }
 
@@ -159,8 +179,8 @@ class Calculator
     public function getValues(): array
     {
         return [
-            'facility' => $this->facility,
-            'card' => $this->card,
+            'facility_code' => $this->facility,
+            'card_number' => $this->card,
             'binary' => $this->binary,
             'hex' => $this->hex,
             'proxmark' => $this->proxmark,
